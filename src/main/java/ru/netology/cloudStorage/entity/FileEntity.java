@@ -38,8 +38,12 @@ public class FileEntity {
     @Column(nullable = false)
     private LocalDateTime createdDate;
 
-    @Column(nullable = true)
+
     private LocalDateTime updatedDate;
 
     private boolean isDelete = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UsersEntity usersEntity;
 }
