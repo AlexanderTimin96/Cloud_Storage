@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface FileService {
 
-    boolean uploadFile(MultipartFile file, String fileName);
+    void uploadFile(MultipartFile file, String fileName);
 
     FileDTO downloadFile(String fileName);
 
-    boolean editFileName(String fileName, FileDTO name);
+    void editFileName(String fileName, FileDTO name);
 
-    boolean deleteFile(String fileName);
+    void deleteFile(String fileName);
 
     List<FileDTO> getAllFiles(int limit);
 }

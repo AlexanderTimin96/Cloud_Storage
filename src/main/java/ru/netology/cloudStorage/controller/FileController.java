@@ -14,42 +14,36 @@ import java.util.List;
 @RestController
 
 public class FileController {
-
     private final FileService fileService;
-
 
     public FileController(FileService fileService) {
         this.fileService = fileService;
     }
 
-
     @PostMapping("/file")
     public ResponseEntity<Void> uploadFile(@NotNull @RequestPart("file") MultipartFile file,
                                            @RequestParam("filename") String fileName) {
-        if (fileService.uploadFile(file, fileName)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return null;
-        }
+        fileService.uploadFile(file, fileName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/file")
     public ResponseEntity<Void> deleteFile(@RequestParam String fileName) {
-        if (fileService.deleteFile(fileName)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return null;
-        }
+        fileService.deleteFile(fileName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/file")
     public ResponseEntity<byte[]> downloadFile(@RequestParam String filename) {
         fileService.downloadFile(filename);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/file")
     public ResponseEntity<Void> EditFileName(@RequestParam String filename, @RequestBody FileDTO fileDTO) {
         fileService.editFileName(filename, fileDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
     @GetMapping("/list")
