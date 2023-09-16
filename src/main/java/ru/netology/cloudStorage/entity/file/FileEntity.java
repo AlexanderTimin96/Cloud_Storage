@@ -1,10 +1,11 @@
-package ru.netology.cloudStorage.entity;
+package ru.netology.cloudStorage.entity.file;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.netology.cloudStorage.entity.user.UsersEntity;
 
 import java.time.LocalDateTime;
 

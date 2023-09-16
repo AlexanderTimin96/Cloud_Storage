@@ -1,4 +1,4 @@
-package ru.netology.cloudStorage.service;
+package ru.netology.cloudStorage.service.file;
 
 import org.springframework.web.multipart.MultipartFile;
 import ru.netology.cloudStorage.DTO.FileDTO;
