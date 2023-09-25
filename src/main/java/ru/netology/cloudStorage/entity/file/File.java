@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.netology.cloudStorage.entity.user.UsersEntity;
+import ru.netology.cloudStorage.entity.user.User;
 
 import java.time.LocalDateTime;
 
@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "files")
-public class FileEntity {
+@Table(name = "files", schema = "public")
+public class File {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +33,7 @@ public class FileEntity {
     @Column(nullable = false)
     private Long size;
 
+    @Lob
     @Column(nullable = false)
     private byte[] fileByte;
 
@@ -45,6 +46,5 @@ public class FileEntity {
     private boolean isDelete = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UsersEntity usersEntity;
+    private User user;
 }

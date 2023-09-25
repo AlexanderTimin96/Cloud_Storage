@@ -1,27 +1,15 @@
 package ru.netology.cloudStorage.service.user;
 
-import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import ru.netology.cloudStorage.entity.user.UsersEntity;
-import ru.netology.cloudStorage.repository.UserRepository;
+import ru.netology.cloudStorage.DTO.UserDTO;
 
-import static java.lang.String.format;
+public interface UserService {
 
-@Service
-@AllArgsConstructor
-public class UserService implements UserDetailsService {
+    UserDTO getUserById(Long id);
 
-    private final UserRepository userRepository;
+    UserDTO updateUser(UserDTO userDto, Long id);
 
-    @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        UsersEntity userDetails = userRepository.findByLogin(login).orElseThrow(
-                () ->
-                        new UsernameNotFoundException(
-                                format("User with login - %s, not found", login)));
-        return userDetails;
-    }
+    void deleteUserById(Long id);
+
+    UserDTO findUserByLogin(String login);
+
 }

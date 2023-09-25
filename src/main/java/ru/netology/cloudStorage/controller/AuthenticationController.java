@@ -1,5 +1,7 @@
 package ru.netology.cloudStorage.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import ru.netology.cloudStorage.DTO.UserDTO;
 import ru.netology.cloudStorage.model.Token;
-import ru.netology.cloudStorage.service.authentication.AuthenticationService;
-
+import ru.netology.cloudStorage.service.AuthenticationService;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,16 +19,15 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-
     @PostMapping("/login")
-    public Token login(@RequestBody UserDTO request) {
-        return authenticationService.login(request);
-
+    public Token login(@RequestBody UserDTO userDTO) {
+        return authenticationService.login(userDTO);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("auth-token") String authToken) {
-        authenticationService.logout(authToken);
+    public ResponseEntity<?> logout(@RequestHeader("auth-token") String authToken,
+                                    HttpServletRequest request, HttpServletResponse response) {
+        authenticationService.logout(authToken, request, response);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

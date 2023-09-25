@@ -5,17 +5,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.netology.cloudStorage.DTO.FileDTO;
-import ru.netology.cloudStorage.repository.FileRepository;
-import ru.netology.cloudStorage.repository.UserRepository;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class FileServiceImpl implements FileService {
-
-    private final FileRepository fileRepository;
-    private final UserRepository userRepository;
 
     @Override
     @Transactional
