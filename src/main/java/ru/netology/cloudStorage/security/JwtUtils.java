@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.netology.cloudStorage.entity.user.UserRole;
 
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,8 +21,7 @@ public final class JwtUtils {
 
     private static Set<UserRole> getRoles(Claims claims) {
         List<String> roles = claims.get("roles", List.class);
-        return roles
-                .stream()
+        return roles.stream()
                 .map(UserRole::valueOf)
                 .collect(Collectors.toSet());
     }

@@ -22,6 +22,7 @@ public class JwtAuthentication implements Authentication {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
     }
+
     @Override
     public Object getCredentials() {
         return null;
@@ -36,6 +37,7 @@ public class JwtAuthentication implements Authentication {
     public Object getPrincipal() {
         return username;
     }
+
     @Override
     public boolean isAuthenticated() {
         return authenticated;

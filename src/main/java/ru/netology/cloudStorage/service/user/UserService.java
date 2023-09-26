@@ -1,15 +1,13 @@
 package ru.netology.cloudStorage.service.user;
 
 import ru.netology.cloudStorage.DTO.UserDTO;
+import ru.netology.cloudStorage.entity.user.User;
 
 public interface UserService {
 
-    UserDTO getUserById(Long id);
+        User createUser(UserDTO userDto);
 
-    UserDTO updateUser(UserDTO userDto, Long id);
+        void deleteUserByLogin(String login);
 
-    void deleteUserById(Long id);
-
-    UserDTO findUserByLogin(String login);
-
-}
+        User findUserByLogin(String login);
+    }

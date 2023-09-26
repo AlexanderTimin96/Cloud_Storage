@@ -1,14 +1,12 @@
 package ru.netology.cloudStorage.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
+@Getter
 public class UserDTO {
     private String login;
     private String password;

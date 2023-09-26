@@ -40,7 +40,6 @@ public class File {
     @Column(nullable = false)
     private LocalDateTime createdDate;
 
-
     private LocalDateTime updatedDate;
 
     private boolean isDelete = false;

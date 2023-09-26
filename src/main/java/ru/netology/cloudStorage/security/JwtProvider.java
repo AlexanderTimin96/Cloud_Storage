@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.netology.cloudStorage.entity.user.User;
@@ -17,41 +18,37 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 @Component
 public class JwtProvider {
 
     private final SecretKey jwtAccessSecret;
     private User authUser;
-    @Value("${jwt.time-life-token}")
-    private long timeLifeToken;
-
-    private final Set<String> validToken;
-
-    public JwtProvider(
-            @Value("${jwt.secret.access}") String jwtAccessSecret) {
-        this.jwtAccessSecret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtAccessSecret));
-        this.validToken = new HashSet<>();
-    }
+    private final Set<String> blackListAuthToken = new HashSet<>();
 
     public User getAuthorizedUser() {
         return authUser;
     }
 
+    public JwtProvider(
+            @Value("${jwt.secret.access}")
+            String jwtAccessSecret) {
+        this.jwtAccessSecret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtAccessSecret));
+    }
+
     public String generateAccessToken(@NonNull User user) {
         authUser = user;
         LocalDateTime now = LocalDateTime.now();
-        Instant accessExpirationInstant = now.plusMinutes(timeLifeToken)
+        Instant accessExpirationInstant = now.plusMinutes(5)
                 .atZone(ZoneId.systemDefault()).toInstant();
         Date accessExpiration = Date.from(accessExpirationInstant);
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setId(String.valueOf(user.getId()))
                 .setSubject(user.getLogin())
                 .setExpiration(accessExpiration)
                 .signWith(jwtAccessSecret)
                 .claim("roles", user.getRoles())
                 .compact();
-        validToken.add(token);
-        return token;
     }
 
     public boolean validateAccessToken(@NonNull String accessToken) {
@@ -59,9 +56,10 @@ public class JwtProvider {
     }
 
     private boolean validateToken(@NonNull String token, @NonNull Key secret) {
-        if (!validToken.contains(token)) {
+        if (blackListAuthToken.contains(token)) {
             return false;
         }
+
         try {
             Jwts.parserBuilder()
                     .setSigningKey(secret)
@@ -69,15 +67,15 @@ public class JwtProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException expEx) {
-
+            log.error("Token expired", expEx);
         } catch (UnsupportedJwtException unsEx) {
-
+            log.error("Unsupported jwt", unsEx);
         } catch (MalformedJwtException mjEx) {
-
+            log.error("Malformed jwt", mjEx);
         } catch (SignatureException sEx) {
-
+            log.error("Invalid signature", sEx);
         } catch (Exception e) {
-
+            log.error("invalid token", e);
         }
         return false;
     }
@@ -94,7 +92,7 @@ public class JwtProvider {
                 .getBody();
     }
 
-    public void removeToken(String token) {
-        validToken.remove(token);
+    public void addAuthTokenInBlackList(String authToken) {
+        blackListAuthToken.add(authToken);
     }
 }

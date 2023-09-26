@@ -7,9 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Range;
 import ru.netology.cloudStorage.entity.file.File;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +31,9 @@ public class User {
     @NotBlank
     @Column(nullable = false)
     private String password;
+
+    @NotBlank
+    private LocalDateTime created;
 
     @ElementCollection
     @Enumerated(EnumType.STRING)

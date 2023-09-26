@@ -6,10 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 @RequiredArgsConstructor
 public enum UserRole implements GrantedAuthority {
 
-    UPLOAD("UPLOAD"),
-    UPDATE("UPDATE"),
-    DOWNLOAD("DOWNLOAD"),
-    DELETE("DELETE");
+    ROLE_USER ("ROLE_USER"),
+    ROLE_ADMIN("ROLE_ADMIN");
+
     private final String value;
 
     @Override

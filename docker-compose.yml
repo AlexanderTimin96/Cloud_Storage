@@ -8,4 +8,4 @@ services:
     container_name: cloudfront
     image: cloudfront:latest
     ports:
-      - "8080:8080"
+      - "8081:8080"

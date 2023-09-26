@@ -1,10 +1,10 @@
 package ru.netology.cloudStorage.exception;
 
-public class UserNotFoundException extends RuntimeException {
+public class FileNotFoundException extends RuntimeException {
 
     private final long id;
 
-    public UserNotFoundException(String msg, long id) {
+    public FileNotFoundException(String msg, long id) {
         super(msg);
         this.id = id;
     }

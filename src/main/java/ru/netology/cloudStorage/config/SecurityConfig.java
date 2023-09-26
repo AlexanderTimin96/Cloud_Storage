@@ -24,12 +24,6 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
     @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
@@ -53,5 +47,10 @@ public class SecurityConfig {
                 .sessionManagement(request -> request.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
     }
 }
