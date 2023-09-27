@@ -14,6 +14,7 @@ import ru.netology.cloudStorage.service.file.FileService;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class FileController {
 
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @DeleteMapping("/file")
-    public ResponseEntity<Void> deleteFile(@RequestParam String fileName) {
+    public ResponseEntity<Void> deleteFile(@RequestParam("filename") String fileName) {
         fileService.deleteFile(fileName);
         return new ResponseEntity<>(HttpStatus.OK);
     }

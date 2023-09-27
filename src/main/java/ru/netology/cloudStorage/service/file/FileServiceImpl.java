@@ -98,8 +98,11 @@ public class FileServiceImpl implements FileService {
         Long userId = jwtProvider.getAuthorizedUser().getId();
 
         File file = getFileFromStorage(fileName, userId);
-        fileRepository.deleteById(file.getId());
-        log.info("Delete file from storage " +
+        file.setDelete(true);
+        file.setUpdatedDate(LocalDateTime.now());
+
+        fileRepository.save(file);
+        log.info("Set flag isDelete on file from storage " +
                 "by file name {} and userID {}", file, userId);
     }
 

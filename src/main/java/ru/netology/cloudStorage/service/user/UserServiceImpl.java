@@ -29,10 +29,10 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyCreatedException("User with login: " + userDTO.getLogin() + " already created", 0);
         }
         User user = new User();
-        User.builder()
-                .password(passwordEncoder.encode(user.getPassword()))
-                .created(LocalDateTime.now())
-                .roles(Collections.singleton(UserRole.ROLE_USER));
+        user.setLogin(userDTO.getLogin());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setCreated(LocalDateTime.now());
+        user.setRoles(Collections.singleton(UserRole.ROLE_USER));
         userRepository.save(user);
         log.info("Creating new user: {}", user);
         return user;
@@ -51,8 +51,7 @@ public class UserServiceImpl implements UserService {
             log.error("User not found by login: {}", login);
             throw new UserNotFoundException("User not found by login:" + login, 0);
         }
-        User user = userRepository.findUserByLogin(login).get();
-        return user;
+        return userRepository.findUserByLogin(login).get();
     }
 }
 

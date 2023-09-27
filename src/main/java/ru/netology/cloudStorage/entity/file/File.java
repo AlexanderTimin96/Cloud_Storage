@@ -1,9 +1,6 @@
 package ru.netology.cloudStorage.entity.file;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.netology.cloudStorage.entity.user.User;
 
 import javax.persistence.*;
@@ -21,7 +18,7 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String hash;
 
     @Column(nullable = false)
@@ -45,5 +42,6 @@ public class File {
     private boolean isDelete = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private User user;
 }

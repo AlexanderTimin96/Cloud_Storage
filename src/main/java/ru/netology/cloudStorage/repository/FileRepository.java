@@ -1,6 +1,7 @@
 package ru.netology.cloudStorage.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.netology.cloudStorage.entity.file.File;
@@ -14,5 +15,4 @@ public interface FileRepository extends JpaRepository<File, Long> {
 
     @Query(value = "SELECT * FROM files f WHERE f.user_id = :userId ORDER BY f.file_name LIMIT :limit", nativeQuery = true)
     List<File> findFilesByUserIdWithLimit(Long userId, int limit);
-
 }
