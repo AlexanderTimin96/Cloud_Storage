@@ -38,6 +38,12 @@ public class SecurityConfig {
                                 .and()
                                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 )
+
+                .logout().logoutUrl("/logout")
+                .deleteCookies("JSESSIONID")
+                .clearAuthentication(true)
+                .logoutSuccessUrl("/login")
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

@@ -73,14 +73,12 @@ public class FileServiceImpl implements FileService {
         Long userId = jwtProvider.getAuthorizedUser().getId();
 
         File file = getFileFromStorage(fileName, userId);
-        FileDTO fileDTO = new FileDTO();
-        fileDTO.builder()
+
+        return FileDTO.builder()
                 .fileName(file.getFileName())
                 .type(file.getType())
                 .fileByte(file.getFileByte())
-                .size(file.getSize())
                 .build();
-        return fileDTO;
     }
 
     @Override

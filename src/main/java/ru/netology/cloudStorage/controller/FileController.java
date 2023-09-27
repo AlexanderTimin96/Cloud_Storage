@@ -44,10 +44,8 @@ public class FileController {
     public ResponseEntity<byte[]> downloadFile(@RequestParam String filename) {
         FileDTO file = fileService.downloadFile(filename);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + file.getFileName() + "\"")
                 .contentType(MediaType.parseMediaType(file.getType()))
-                .contentLength(file.getSize())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
                 .body(file.getFileByte());
     }
 
