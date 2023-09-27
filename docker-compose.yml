@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  # Application frontend cloud
+
   cloudfront:
     build:
       context: netology-diplom-frontend
@@ -8,4 +8,27 @@ services:
     container_name: cloudfront
     image: cloudfront:latest
     ports:
-      - "8081:8080"
+      - "8080:8080"
+
+#  appcloud:
+#    container_name: app
+#    build: ./
+#    image: app:latest
+#    restart: always
+#    environment:
+#     spring_datasource_url: jdbc:postgresql://postgres:5432/postgres
+#    ports:
+#     - "8081:8081"
+#    depends_on:
+#     - postgres
+#
+#  postgres:
+#    container_name: postgres
+#    image: postgres:alpine
+#    restart: always
+#    environment:
+#      POSTGRES_DB: "postgres"
+#      POSTGRES_USER: "postgres"
+#      POSTGRES_PASSWORD: "postgresql"
+#    ports:
+#      - "5432:5432"

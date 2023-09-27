@@ -1,10 +1,10 @@
 package ru.netology.cloudStorage.service.file;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.netology.cloudStorage.DTO.FileDTO;
 import ru.netology.cloudStorage.entity.file.File;

@@ -3,50 +3,45 @@ package ru.netology.cloudStorage.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import ru.netology.cloudStorage.security.JwtFilter;
-
 
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 @RequiredArgsConstructor
-@EnableMethodSecurity()
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-
     private final JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors((AbstractHttpConfigurer::disable))
-
-                .authorizeHttpRequests((request) ->
-                        request.requestMatchers("/login*")
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated())
-
-                .formLogin(request -> request.loginPage("/login"))
-
-                .logout(request -> request.logoutUrl("/logout")
-                        .deleteCookies("JSESSIONID")
-                        .clearAuthentication(true)
-                        .logoutSuccessUrl("/login"))
-
-                .sessionManagement(request -> request.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        return http.build();
+        return http
+                .httpBasic().disable()
+                .formLogin().disable()
+                .csrf().disable()
+                .cors().and()
+                .logout().disable()
+                .authorizeRequests(
+                        authz -> authz
+                                .antMatchers("/login", "/users/create").permitAll()
+                                .anyRequest().authenticated()
+                                .and()
+                                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                )
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .build();
     }
 
     @Bean

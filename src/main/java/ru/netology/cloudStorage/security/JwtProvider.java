@@ -24,7 +24,10 @@ public class JwtProvider {
 
     private final SecretKey jwtAccessSecret;
     private User authUser;
-    private final Set<String> blackListAuthToken = new HashSet<>();
+
+    @Value("${jwt.time-life-token}")
+    private int timeLifeToken;
+    private final Set<String> blackListToken = new HashSet<>();
 
     public User getAuthorizedUser() {
         return authUser;
@@ -39,7 +42,7 @@ public class JwtProvider {
     public String generateAccessToken(@NonNull User user) {
         authUser = user;
         LocalDateTime now = LocalDateTime.now();
-        Instant accessExpirationInstant = now.plusMinutes(5)
+        Instant accessExpirationInstant = now.plusMinutes(timeLifeToken)
                 .atZone(ZoneId.systemDefault()).toInstant();
         Date accessExpiration = Date.from(accessExpirationInstant);
         return Jwts.builder()
@@ -52,19 +55,15 @@ public class JwtProvider {
     }
 
     public boolean validateAccessToken(@NonNull String accessToken) {
-        return validateToken(accessToken, jwtAccessSecret);
-    }
-
-    private boolean validateToken(@NonNull String token, @NonNull Key secret) {
-        if (blackListAuthToken.contains(token)) {
+        if (blackListToken.contains(accessToken)) {
             return false;
         }
 
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(secret)
+                    .setSigningKey(jwtAccessSecret)
                     .build()
-                    .parseClaimsJws(token);
+                    .parseClaimsJws(accessToken);
             return true;
         } catch (ExpiredJwtException expEx) {
             log.error("Token expired", expEx);
@@ -93,6 +92,6 @@ public class JwtProvider {
     }
 
     public void addAuthTokenInBlackList(String authToken) {
-        blackListAuthToken.add(authToken);
+        blackListToken.add(authToken);
     }
 }

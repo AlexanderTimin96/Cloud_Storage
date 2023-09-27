@@ -1,7 +1,5 @@
 package ru.netology.cloudStorage.service.authentication;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +15,9 @@ import ru.netology.cloudStorage.exception.UserNotFoundException;
 import ru.netology.cloudStorage.model.Token;
 import ru.netology.cloudStorage.repository.UserRepository;
 import ru.netology.cloudStorage.security.JwtProvider;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Service
