@@ -1,5 +1,6 @@
 package ru.netology.cloudStorage.service.file;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public void uploadFile(MultipartFile file, String fileName) {
+    public void uploadFile(@NonNull MultipartFile file, String fileName) {
         if (file.isEmpty()) {
             log.info("File not attached: {}", fileName);
             throw new FileNotFoundException("File not attached", 0);
@@ -52,21 +53,17 @@ public class FileServiceImpl implements FileService {
 
         }
 
-        File createdFile = new File();
-        createdFile.builder()
+        fileRepository.save(File.builder()
                 .hash(hash)
                 .fileName(fileName)
                 .type(file.getContentType())
                 .size(file.getSize())
                 .fileByte(fileBytes)
                 .createdDate(LocalDateTime.now())
-                .user(User.builder()
-                        .id(userId)
-                        .build())
-                .build();
+                .user(User.builder().id(userId).build())
+                .build());
 
-        fileRepository.save(createdFile);
-        log.info("Creating file and save to storage: {}", createdFile.getFileName());
+        log.info("Creating file and save to storage: {}", fileName);
     }
 
 
@@ -114,7 +111,7 @@ public class FileServiceImpl implements FileService {
         Long userId = jwtProvider.getAuthorizedUser().getId();
 
         List<File> filesByUserIdWithLimit = fileRepository.findFilesByUserIdWithLimit(userId, limit);
-        return filesByUserIdWithLimit.stream()
+        return filesByUserIdWithLimit.stream().filter(file -> !file.isDelete())
                 .map(file -> FileDTO.builder()
                         .fileName(file.getFileName())
                         .type(file.getType())

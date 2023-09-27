@@ -1,6 +1,7 @@
 package ru.netology.cloudStorage.DTO;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 public class FileDTO {
+    @JsonProperty("filename")
     private String fileName;
     private Long size;
     private String hash;
