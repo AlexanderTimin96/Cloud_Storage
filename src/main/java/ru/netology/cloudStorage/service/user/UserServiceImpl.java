@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
             log.error("User not found by login: {}", login);
             throw new UserNotFoundException("User not found by login:" + login, 0);
         }
+        log.info("Return user by login: {}", login);
         return userRepository.findUserByLogin(login).get();
     }
 }

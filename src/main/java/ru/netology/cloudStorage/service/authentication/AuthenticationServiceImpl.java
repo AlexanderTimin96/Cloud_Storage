@@ -2,7 +2,6 @@ package ru.netology.cloudStorage.service.authentication;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 

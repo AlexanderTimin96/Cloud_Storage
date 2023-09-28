@@ -35,13 +35,14 @@ public class FileServiceImpl implements FileService {
     @Transactional
     public void uploadFile(@NonNull MultipartFile file, String fileName) {
         if (file.isEmpty()) {
-            log.info("File not attached: {}", fileName);
+            log.error("File not attached: {}", fileName);
             throw new FileNotFoundException("File not attached", 0);
         }
 
         Long userId = jwtProvider.getAuthorizedUser().getId();
 
         if (fileRepository.findFileByUserIdAndFileName(userId, fileName).isPresent()) {
+            log.error("Downloading an existing file: {}", fileName);
             throw new InvalidInputDataException("This file already uploaded. Please upload other file", userId);
         }
 
@@ -50,7 +51,8 @@ public class FileServiceImpl implements FileService {
         try {
             fileBytes = file.getBytes();
         } catch (IOException e) {
-
+            log.error("Error reading file bytes: {}", fileName);
+            throw new InvalidInputDataException("The file is not readable", userId);
         }
 
         fileRepository.save(File.builder()
@@ -74,6 +76,7 @@ public class FileServiceImpl implements FileService {
 
         File file = getFileFromStorage(fileName, userId);
 
+        log.info("Download file: {}", fileName);
         return FileDTO.builder()
                 .fileName(file.getFileName())
                 .type(file.getType())
@@ -88,7 +91,7 @@ public class FileServiceImpl implements FileService {
 
         File file = getFileFromStorage(fileName, userId);
         file.setFileName(fileDTO.getFileName());
-
+        log.info("Edit name file: {} to {}", fileName, fileDTO.getFileName());
         fileRepository.save(file);
     }
 
@@ -143,7 +146,7 @@ public class FileServiceImpl implements FileService {
 
     private File getFileFromStorage(String fileName, Long userId) {
         if (fileRepository.findFileByUserIdAndFileName(userId, fileName).isEmpty()) {
-            log.info("File in storage by file name {} and UserID {} not found", fileName, userId);
+            log.error("File in storage by file name {} and UserID {} not found", fileName, userId);
             throw new FileNotFoundException("File in storage by file name " + fileName
                     + " and UserID " + userId + " not found", userId);
         }
