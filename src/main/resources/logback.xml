@@ -19,7 +19,7 @@
         <pattern>%d %p [%t] %C: %msg%n%throwable</pattern>
     </encoder>
 </appender>
-<logger name="ru.netology.cloudStorage" level="debug" additivity="false">
+<logger name="ru.netology.cloudStorage" level="INFO" additivity="false">
     <appender-ref ref="FILE"/>
     <appender-ref ref="CONSOLE"/>
 </logger>

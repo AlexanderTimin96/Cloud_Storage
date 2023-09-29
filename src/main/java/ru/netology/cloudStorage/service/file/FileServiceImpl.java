@@ -91,6 +91,7 @@ public class FileServiceImpl implements FileService {
 
         File file = getFileFromStorage(fileName, userId);
         file.setFileName(fileDTO.getFileName());
+
         log.info("Edit name file: {} to {}", fileName, fileDTO.getFileName());
         fileRepository.save(file);
     }
@@ -104,9 +105,9 @@ public class FileServiceImpl implements FileService {
         file.setDelete(true);
         file.setUpdatedDate(LocalDateTime.now());
 
-        fileRepository.save(file);
         log.info("Set flag isDelete on file from storage " +
                 "by file name {} and userID {}", file, userId);
+        fileRepository.save(file);
     }
 
     @Override
@@ -123,6 +124,36 @@ public class FileServiceImpl implements FileService {
                         .size(file.getSize())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public List<FileDTO> getAllDeleteFiles(int limit, String login) {
+
+        List<File> filesByUserIdWithLimit = fileRepository.findFileByUserLogin(login);
+        return filesByUserIdWithLimit.stream().filter(File::isDelete).limit(limit)
+                .map(file -> FileDTO.builder()
+                        .fileName(file.getFileName())
+                        .type(file.getType())
+                        .date(file.getCreatedDate())
+                        .size(file.getSize())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void restoreFile(long id) {
+        if (fileRepository.findById(id).isEmpty()) {
+            log.error("File in storage by id {} not found", id);
+            throw new FileNotFoundException("File in storage by id " + id + " not found", 0);
+        }
+        File file = fileRepository.findById(id).get();
+        file.setDelete(false);
+        file.setUpdatedDate(LocalDateTime.now());
+
+        log.info("File in storage by id {} restore", id);
+        fileRepository.save(file);
     }
 
     @SneakyThrows

@@ -26,12 +26,12 @@ public class UserServiceImpl implements UserService {
     public User createUser(UserDTO userDTO) {
         if (userRepository.findUserByLogin(userDTO.getLogin()).isPresent()) {
             log.error("User with login: {} already created", userDTO.getLogin());
-            throw new UserAlreadyCreatedException("User with login: " + userDTO.getLogin() + " already created", 0);
+            throw new UserAlreadyCreatedException("User with login: " + userDTO + " already created", 0);
         }
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setCreated(LocalDateTime.now());
+        user.setCreatedDate(LocalDateTime.now());
         user.setRoles(Collections.singleton(UserRole.ROLE_USER));
         userRepository.save(user);
         log.info("Creating new user: {}", user);
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUserByLogin(String login) {
         User user = findUserByLogin(login);
         userRepository.delete(user);
-        log.info("Deleted user by login: {}", login);
+        log.info("Deleted user by login: {}", user);
     }
 
     @Override

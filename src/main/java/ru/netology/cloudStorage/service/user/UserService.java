@@ -5,9 +5,9 @@ import ru.netology.cloudStorage.entity.user.User;
 
 public interface UserService {
 
-        User createUser(UserDTO userDto);
+    User createUser(UserDTO userDto);
 
-        void deleteUserByLogin(String login);
+    void deleteUserByLogin(String login);
 
-        User findUserByLogin(String login);
-    }
+    User findUserByLogin(String login);
+}

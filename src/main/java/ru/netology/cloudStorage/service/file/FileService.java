@@ -16,4 +16,8 @@ public interface FileService {
     void deleteFile(String fileName);
 
     List<FileDTO> getAllFiles(int limit);
+
+    List<FileDTO> getAllDeleteFiles(int limit, String login);
+
+    void restoreFile(long fileName);
 }

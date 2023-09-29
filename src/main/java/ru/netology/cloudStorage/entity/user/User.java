@@ -33,7 +33,7 @@ public class User {
     private String password;
 
 
-    private LocalDateTime created;
+    private LocalDateTime createdDate;
 
     @ElementCollection
     @Enumerated(EnumType.STRING)

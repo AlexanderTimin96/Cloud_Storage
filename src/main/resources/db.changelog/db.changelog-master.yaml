@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      file: migrations/001_file.sql
+      relativeToChangeLogFile: true
+  - include:
+      file: migrations/002_users.sql
+      relativeToChangeLogFile: true
+  - include:
+      file: migrations/003_role.sql
+      relativeToChangeLogFile: true
+  - include:
+      file: migrations/004_add_users.sql
+      relativeToChangeLogFile: true

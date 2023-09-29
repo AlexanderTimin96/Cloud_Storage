@@ -1,7 +1,5 @@
 package ru.netology.cloudStorage.advice;
 
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -12,7 +10,6 @@ import ru.netology.cloudStorage.exception.UserAlreadyCreatedException;
 import ru.netology.cloudStorage.exception.UserNotFoundException;
 import ru.netology.cloudStorage.model.Error;
 
-@Slf4j
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
 
