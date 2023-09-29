@@ -62,13 +62,13 @@ public class FileController {
         return new ResponseEntity<>(fileService.getAllFiles(limit), HttpStatus.OK);
     }
 
-    @GetMapping("/list-deleted-files")
+    @GetMapping("/list_deleted_files")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<FileDTO>> getAllDeleteFiles(@Min(1) @RequestParam int limit, String login) {
         return new ResponseEntity<>(fileService.getAllDeleteFiles(limit, login), HttpStatus.OK);
     }
 
-    @PutMapping("/restore-file")
+    @PutMapping("/restore_file")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> restoreFile(@RequestParam long id) {
         fileService.restoreFile(id);

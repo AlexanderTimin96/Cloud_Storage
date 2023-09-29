@@ -106,7 +106,7 @@ public class FileServiceImpl implements FileService {
         file.setUpdatedDate(LocalDateTime.now());
 
         log.info("Set flag isDelete on file from storage " +
-                "by file name {} and userID {}", file, userId);
+                "by file name {} and userID {}", file.getFileName(), userId);
         fileRepository.save(file);
     }
 
