@@ -47,7 +47,7 @@ public class FileServiceImpl implements FileService {
         }
 
         String hash = getHashOfFile(file);
-        byte[] fileBytes = null;
+        byte[] fileBytes;
         try {
             fileBytes = file.getBytes();
         } catch (IOException e) {

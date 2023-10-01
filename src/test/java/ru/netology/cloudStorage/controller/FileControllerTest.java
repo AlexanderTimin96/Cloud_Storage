@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import ru.netology.cloudStorage.DTO.FileDTO;
-import ru.netology.cloudStorage.controller.FileController;
 import ru.netology.cloudStorage.service.file.FileService;
 
 import java.util.List;
