@@ -24,7 +24,7 @@ public class UserControllerTest {
 
     private static final String AUTH_TOKEN = "auth-token";
     private static final String VALUE_TOKEN = "Bearer ***anyToken***";
-    private static final String LOGIN = "test@test.com";
+    private static final String LOGIN = "test@test.ru";
     private static final String PASSWORD = "test";
 
     MockMvc mockMvc;

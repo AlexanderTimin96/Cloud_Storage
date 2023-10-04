@@ -79,7 +79,7 @@ public class FileControllerTest {
     @Test
     void testEditFileName_thenSuccess() throws Exception {
         FileDTO newName = new FileDTO();
-        newName.setFileName("newName.txt");
+        newName.setFileName("newFile.txt");
 
         mockMvc.perform(put(URL_FILE)
                         .param(FILE_NAME, MY_FILE_NAME)
