@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class FileServiceImpl implements FileService {
 
     private final FileRepository fileRepository;
@@ -32,7 +33,6 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
-    @Transactional
     public void uploadFile(@NonNull MultipartFile file, String fileName) {
         if (file.isEmpty()) {
             log.error("File not attached: {}", fileName);
@@ -70,7 +70,6 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
-    @Transactional
     public FileDTO downloadFile(String fileName) {
         Long userId = jwtProvider.getAuthorizedUser().getId();
 
@@ -85,7 +84,6 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    @Transactional
     public void editFileName(String fileName, FileDTO fileDTO) {
         Long userId = jwtProvider.getAuthorizedUser().getId();
 
@@ -97,7 +95,6 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    @Transactional
     public void deleteFile(String fileName) {
         Long userId = jwtProvider.getAuthorizedUser().getId();
 
@@ -111,7 +108,6 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    @Transactional
     public List<FileDTO> getAllFiles(int limit) {
         Long userId = jwtProvider.getAuthorizedUser().getId();
 
@@ -124,36 +120,6 @@ public class FileServiceImpl implements FileService {
                         .size(file.getSize())
                         .build())
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional
-    public List<FileDTO> getAllDeleteFiles(int limit, String login) {
-
-        List<File> filesByUserIdWithLimit = fileRepository.findFileByUserLogin(login);
-        return filesByUserIdWithLimit.stream().filter(File::isDelete).limit(limit)
-                .map(file -> FileDTO.builder()
-                        .fileName(file.getFileName())
-                        .type(file.getType())
-                        .date(file.getCreatedDate())
-                        .size(file.getSize())
-                        .build())
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional
-    public void restoreFile(long id) {
-        if (fileRepository.findById(id).isEmpty()) {
-            log.error("File in storage by id {} not found", id);
-            throw new FileNotFoundException("File in storage by id " + id + " not found", 0);
-        }
-        File file = fileRepository.findById(id).get();
-        file.setDelete(false);
-        file.setUpdatedDate(LocalDateTime.now());
-
-        log.info("File in storage by id {} restore", id);
-        fileRepository.save(file);
     }
 
     @SneakyThrows
